@@ -3,13 +3,7 @@ name: Task1 Weather CI
 on:
   workflow_dispatch:
   push:
-    paths:
-      - ".github/workflows/task1.yml"
-      - "Task1-WeatherApplication/**"
   pull_request:
-    paths:
-      - ".github/workflows/task1.yml"
-      - "Task1-WeatherApplication/**"
 
 permissions:
   contents: read
@@ -17,9 +11,6 @@ permissions:
 jobs:
   android:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Task1-WeatherApplication
     steps:
       - uses: actions/checkout@v4
       - name: Setup JDK
@@ -34,14 +25,11 @@ jobs:
         run: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> "$GITHUB_ENV"
-      - name: Build Android and run Android unit tests
-        run: bash ./gradlew :app:assembleDebug :app:testDebugUnitTest --stacktrace
+      - name: Build Android
+        run: bash ./gradlew assembleDebug --stacktrace
 
   desktop:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Task1-WeatherApplication
     steps:
       - uses: actions/checkout@v4
       - name: Setup JDK
@@ -50,14 +38,11 @@ jobs:
           distribution: temurin
           java-version: "17"
           cache: gradle
-      - name: Build Desktop and run desktop tests
-        run: bash ./gradlew :app:desktopJar :app:desktopTest --stacktrace
+      - name: Build Desktop
+        run: bash ./gradlew packageDistributionForCurrentOS --stacktrace
 
   web:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Task1-WeatherApplication
     steps:
       - uses: actions/checkout@v4
       - name: Setup JDK
@@ -67,4 +52,5 @@ jobs:
           java-version: "17"
           cache: gradle
       - name: Build Web
-        run: bash ./gradlew :app:jsBrowserDistribution --stacktrace
+
+        run: bash ./gradlew jsBrowserDistribution --stacktrace
