@@ -20,9 +20,20 @@ kotlin {
             }
         }
     }
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    //iosX64()
+    //iosArm64()
+    //iosSimulatorArm64()
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "ComposeApp"
+            isStatic = true
+        }
+    }
 
     js(IR) {
         moduleName = "weatherApp"
@@ -89,7 +100,7 @@ kotlin {
         val iosSimulatorArm64Main by getting { dependsOn(iosMain) }
 
         val jsMain by getting {
-            kotlin.srcDir("src/wasmJsMain/kotlin")
+            //kotlin.srcDir("src/wasmJsMain/kotlin")
             dependencies {
                 implementation(libs.ktor.client.js)
             }

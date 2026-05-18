@@ -83,4 +83,4 @@ jobs:
           java-version: "17"
           cache: gradle
       - name: Build iOS
-        run: bash ./gradlew :app:iosArm64Binaries --stacktrace
+        run: bash ./gradlew :app:linkDebugFrameworkIosSimulatorArm64 --stacktrace
