@@ -93,6 +93,11 @@ kotlin {
         val iosMain by creating {
             dependencies {
                 implementation(libs.ktor.client.darwin)
+
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
             }
         }
         val iosX64Main by getting { dependsOn(iosMain) }
@@ -103,6 +108,12 @@ kotlin {
             //kotlin.srcDir("src/wasmJsMain/kotlin")
             dependencies {
                 implementation(libs.ktor.client.js)
+
+                implementation(compose.html.core)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
             }
         }
     }
