@@ -1,7 +1,7 @@
 package com.example.weatherapplication.data
 
 actual object CacheStorage {
-    
+
     actual fun save(text: String) {
     }
 

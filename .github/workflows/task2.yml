@@ -1,0 +1,96 @@
+name: Task2 Calculator CI
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/task2.yml"
+      - "Task2-Calc/**"
+  pull_request:
+    paths:
+      - ".github/workflows/task2.yml"
+      - "Task2-Calc/**"
+
+permissions:
+  contents: read
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Task2-Calc
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+          
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        
+      - name: Prepare Android local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> "$GITHUB_ENV"
+          
+      - name: Build and Test Android
+        run: bash ./gradlew :app:assembleDebug :app:testDebugUnitTest --stacktrace
+
+  desktop:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Task2-Calc
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+          
+      - name: Build and Test Desktop
+        run: bash ./gradlew :app:desktopJar :app:desktopTest --stacktrace
+
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Task2-Calc
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+          
+      - name: Build and Test Web
+        run: bash ./gradlew :app:jsBrowserDistribution :app:jsBrowserTest --stacktrace
+
+  ios:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: Task2-Calc
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+          
+      - name: Build and Test iOS
+        run: bash ./gradlew :app:linkDebugFrameworkIosSimulatorArm64 :app:iosSimulatorArm64Test --stacktrace
