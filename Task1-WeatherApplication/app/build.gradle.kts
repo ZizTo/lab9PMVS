@@ -91,6 +91,7 @@ kotlin {
             }
         }
         val iosMain by creating {
+            //dependsOn(commonMain.get())
             dependencies {
                 implementation(libs.ktor.client.darwin)
 
@@ -107,6 +108,7 @@ kotlin {
         val jsMain by getting {
             //kotlin.srcDir("src/wasmJsMain/kotlin")
             dependencies {
+                //implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.js)
 
                 implementation(compose.html.core)

@@ -1,5 +1,6 @@
 package com.example.weatherapplication
 
+
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import com.example.weatherapplication.data.CurrentWeather
@@ -11,7 +12,6 @@ import kotlinx.coroutines.launch
 
 class WeatherStateHolder {
     private val api = WeatherApi()
-    // 1. ИСПОЛЬЗУЕМ MAIN ДИСПАТЧЕР
     private val scope = CoroutineScope(Dispatchers.Main)
 
     val cities = mutableStateListOf("Минск", "Москва")
@@ -20,7 +20,8 @@ class WeatherStateHolder {
     val isLoading = mutableStateOf(false)
     val errorMessage = mutableStateOf<String?>(null)
 
-    // Блок init удален
+    private val weatherCache = mutableMapOf<String, CurrentWeather>()
+    private val forecastCache = mutableMapOf<String, List<ForecastItem>>()
 
     fun addCity(cityName: String) {
         if (cityName.isNotBlank() && !cities.contains(cityName)) {
@@ -29,7 +30,6 @@ class WeatherStateHolder {
         }
     }
 
-    // 2. СДЕЛАЛИ ФУНКЦИЮ ПУБЛИЧНОЙ
     fun loadWeatherForAllCities() {
         cities.forEach { loadWeatherForCity(it) }
     }
@@ -39,10 +39,17 @@ class WeatherStateHolder {
             isLoading.value = true
             try {
                 val weather = api.getCurrentWeather(city)
+                weatherCache[city] = weather
                 weatherData.value = weatherData.value + (city to weather)
                 errorMessage.value = null
             } catch (e: Exception) {
-                errorMessage.value = "Ошибка: ${e.message}"
+                val cached = weatherCache[city]
+                if (cached != null) {
+                    weatherData.value = weatherData.value + (city to cached)
+                    errorMessage.value = "Нет сети. Показаны закэшированные данные."
+                } else {
+                    errorMessage.value = "Ошибка: ${e.message}"
+                }
             } finally {
                 isLoading.value = false
             }
@@ -54,10 +61,18 @@ class WeatherStateHolder {
             isLoading.value = true
             try {
                 val response = api.getForecast(city)
-                forecastData.value = response.list.filterIndexed { index, _ -> index % 8 == 0 }.take(5)
+                val filtered = response.list.filterIndexed { index, _ -> index % 8 == 0 }.take(5)
+                forecastCache[city] = filtered
+                forecastData.value = filtered
                 errorMessage.value = null
             } catch (e: Exception) {
-                errorMessage.value = "Ошибка загрузки прогноза"
+                val cached = forecastCache[city]
+                if (cached != null) {
+                    forecastData.value = cached
+                    errorMessage.value = "Нет сети. Показаны закэшированные данные."
+                } else {
+                    errorMessage.value = "Ошибка загрузки прогноза"
+                }
             } finally {
                 isLoading.value = false
             }

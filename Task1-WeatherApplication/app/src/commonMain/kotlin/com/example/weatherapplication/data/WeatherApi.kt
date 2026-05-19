@@ -17,7 +17,7 @@ class WeatherApi {
         }
     }
 
-    private val apiKey = "1bafea42aff0cc6f6528b480f29ed028" // Твой ключ из 5-й лабы
+    private val apiKey = "1bafea42aff0cc6f6528b480f29ed028"
     private val baseUrl = "https://api.openweathermap.org/data/2.5"
 
     suspend fun getCurrentWeather(city: String): CurrentWeather {

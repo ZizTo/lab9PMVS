@@ -9,6 +9,6 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "Ziz Weather Desktop"
     ) {
-        App()
+        App(object : Platform { override val isDesktop = true })
     }
 }

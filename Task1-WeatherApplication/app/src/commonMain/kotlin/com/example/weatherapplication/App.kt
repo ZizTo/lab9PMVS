@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -11,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weatherapplication.data.CurrentWeather
@@ -18,7 +20,7 @@ import com.example.weatherapplication.data.CurrentWeather
 enum class Screen { Cities, Details, Forecast }
 
 @Composable
-fun App() {
+fun App(platform: Platform) {
     MaterialTheme {
         val stateHolder = remember { WeatherStateHolder() }
 
@@ -31,6 +33,7 @@ fun App() {
 
         when (currentScreen) {
             Screen.Cities -> CitiesScreen(
+                platform.isDesktop,
                 stateHolder = stateHolder,
                 onNavigateToDetails = { city ->
                     selectedCity = city
@@ -58,7 +61,7 @@ fun App() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CitiesScreen(stateHolder: WeatherStateHolder, onNavigateToDetails: (String) -> Unit) {
+fun CitiesScreen(isDesktop: Boolean, stateHolder: WeatherStateHolder, onNavigateToDetails: (String) -> Unit) {
     var showDialog by remember { mutableStateOf(false) }
     var newCity by remember { mutableStateOf("") }
 
@@ -86,7 +89,7 @@ fun CitiesScreen(stateHolder: WeatherStateHolder, onNavigateToDetails: (String) 
             LazyColumn {
                 items(stateHolder.cities) { city ->
                     val weather = stateHolder.weatherData.value[city]
-                    CityItem(city, weather) {
+                    CityItem(isDesktop, city, weather) {
                         onNavigateToDetails(city)
                     }
                 }
@@ -117,8 +120,11 @@ fun CitiesScreen(stateHolder: WeatherStateHolder, onNavigateToDetails: (String) 
 }
 
 @Composable
-fun CityItem(city: String, weather: CurrentWeather?, onClick: () -> Unit) {
+fun CityItem(isDesktop: Boolean, city: String, weather: CurrentWeather?, onClick: () -> Unit) {
+    val cardShape = if (isDesktop) RectangleShape else RoundedCornerShape(16.dp)
+
     Card(
+        shape = cardShape,
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
