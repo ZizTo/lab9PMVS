@@ -76,8 +76,10 @@ fun FinancialCalculator() {
         Spacer(modifier = Modifier.height(16.dp))
 
         if (finalAmount > 0) {
-            Text("Конечная сумма: ${"%.2f".format(finalAmount)}")
-            Text("Общая прибыль: ${"%.2f".format(profit)}")
+            Text("Конечная сумма: ${finalAmount}")
+            //Text("Конечная сумма: ${"%.2f".format(finalAmount)}")
+            Text("Общая прибыль: ${profit}")
+            //Text("Общая прибыль: ${"%.2f".format(profit)}")
 
             Spacer(modifier = Modifier.height(24.dp))
             Text("График роста капитала:", style = MaterialTheme.typography.titleMedium)
