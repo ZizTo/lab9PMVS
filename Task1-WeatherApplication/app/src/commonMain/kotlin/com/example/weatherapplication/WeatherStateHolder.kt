@@ -1,17 +1,19 @@
 package com.example.weatherapplication
 
-
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import com.example.weatherapplication.data.CurrentWeather
 import com.example.weatherapplication.data.ForecastItem
 import com.example.weatherapplication.data.WeatherApi
+import com.example.weatherapplication.data.WeatherCacheData
+import com.example.weatherapplication.data.WeatherCacheRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class WeatherStateHolder {
     private val api = WeatherApi()
+    private val cacheRepository = WeatherCacheRepository()
     private val scope = CoroutineScope(Dispatchers.Main)
 
     val cities = mutableStateListOf("Минск", "Москва")
@@ -20,13 +22,41 @@ class WeatherStateHolder {
     val isLoading = mutableStateOf(false)
     val errorMessage = mutableStateOf<String?>(null)
 
-    private val weatherCache = mutableMapOf<String, CurrentWeather>()
     private val forecastCache = mutableMapOf<String, List<ForecastItem>>()
 
+    fun restoreFromCache() {
+        val cache = cacheRepository.load() ?: return
+
+        cities.clear()
+        cities.addAll(cache.cities.ifEmpty { listOf("Минск", "Москва") })
+
+        weatherData.value = cache.weatherByCity
+        forecastCache.clear()
+        forecastCache.putAll(cache.forecastByCity)
+
+        errorMessage.value = if (cache.weatherByCity.isNotEmpty()) {
+            "Показаны сохранённые данные."
+        } else {
+            null
+        }
+    }
+
+    private fun saveCache() {
+        cacheRepository.save(
+            WeatherCacheData(
+                cities = cities.toList(),
+                weatherByCity = weatherData.value,
+                forecastByCity = forecastCache
+            )
+        )
+    }
+
     fun addCity(cityName: String) {
-        if (cityName.isNotBlank() && !cities.contains(cityName)) {
-            cities.add(cityName)
-            loadWeatherForCity(cityName)
+        val city = cityName.trim()
+        if (city.isNotEmpty() && !cities.contains(city)) {
+            cities.add(city)
+            saveCache()
+            loadWeatherForCity(city)
         }
     }
 
@@ -39,13 +69,12 @@ class WeatherStateHolder {
             isLoading.value = true
             try {
                 val weather = api.getCurrentWeather(city)
-                weatherCache[city] = weather
                 weatherData.value = weatherData.value + (city to weather)
                 errorMessage.value = null
+                saveCache()
             } catch (e: Exception) {
-                val cached = weatherCache[city]
+                val cached = weatherData.value[city]
                 if (cached != null) {
-                    weatherData.value = weatherData.value + (city to cached)
                     errorMessage.value = "Нет сети. Показаны закэшированные данные."
                 } else {
                     errorMessage.value = "Ошибка: ${e.message}"
@@ -61,10 +90,14 @@ class WeatherStateHolder {
             isLoading.value = true
             try {
                 val response = api.getForecast(city)
-                val filtered = response.list.filterIndexed { index, _ -> index % 8 == 0 }.take(5)
+                val filtered = response.list
+                    .filterIndexed { index, _ -> index % 8 == 0 }
+                    .take(5)
+
                 forecastCache[city] = filtered
                 forecastData.value = filtered
                 errorMessage.value = null
+                saveCache()
             } catch (e: Exception) {
                 val cached = forecastCache[city]
                 if (cached != null) {

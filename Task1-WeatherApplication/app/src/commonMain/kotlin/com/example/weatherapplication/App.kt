@@ -25,6 +25,7 @@ fun App(platform: Platform) {
         val stateHolder = remember { WeatherStateHolder() }
 
         LaunchedEffect(Unit) {
+            stateHolder.restoreFromCache()
             stateHolder.loadWeatherForAllCities()
         }
 
