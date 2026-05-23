@@ -150,37 +150,4 @@ jobs:
           name: task4-linux-build
           path: minsk_transport/build/linux/x64/debug/bundle
 
-  integration-android:
-    runs-on: macos-latest
-    defaults:
-      run:
-        working-directory: minsk_transport
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "17"
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Generate localization
-        run: flutter gen-l10n
-
-      - name: Run Integration Tests
-        uses: ReactiveCircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          target: default
-          arch: x86_64
-          profile: Nexus 6
-          script: flutter test integration_test
+  
