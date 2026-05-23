@@ -13,7 +13,7 @@ endif()
 qt_standard_project_setup(REQUIRES 6.5.3)
 
 qt_add_executable(appTask3QT
-    Main.cpp
+    main.cpp
 )
 
 qt_add_qml_module(appTask3QT
