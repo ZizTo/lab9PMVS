@@ -3,17 +3,16 @@
 #include <QQmlContext>
 #include "playlistmodel.h"
 
-#if defined(Q_OS_ANDROID)
+/*#if defined(Q_OS_ANDROID)
 #include <QtCore/private/qandroidextras_p.h>
 #include <QPermissions>
-#endif
+#endif*/
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
-#if defined(Q_OS_ANDROID)
-    // Для новых версий Android (13+) запрашиваем READ_MEDIA_AUDIO, для старых READ_EXTERNAL_STORAGE
+/*#if defined(Q_OS_ANDROID)
     QStringList permissions = {
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.READ_MEDIA_AUDIO"
@@ -25,7 +24,7 @@ int main(int argc, char *argv[])
             QtAndroidPrivate::requestPermission(permission);
         }
     }
-#endif
+#endif*/
 
     QQmlApplicationEngine engine;
     qmlRegisterType<PlaylistModel>("com.media.player", 1, 0, "PlaylistModel");

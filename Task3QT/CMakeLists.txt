@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick Multimedia QuickControls2 Test)
 
-if(ANDROID)
+if(FALSE)#ANDROID)
     find_package(Qt6 REQUIRED COMPONENTS CorePrivate)
 endif()
 
@@ -44,7 +44,7 @@ target_link_libraries(appTask3QT
     Qt6::QuickControls2
 )
 
-if(ANDROID)
+if(FALSE)#ANDROID)
     target_link_libraries(appTask3QT PRIVATE Qt6::CorePrivate)
 endif()
 
