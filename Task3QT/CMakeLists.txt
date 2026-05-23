@@ -4,7 +4,11 @@ project(Task3QT VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS CorePrivate Quick Multimedia QuickControls2 Test)
+find_package(Qt6 REQUIRED COMPONENTS Quick Multimedia QuickControls2 Test)
+
+if(ANDROID)
+    find_package(Qt6 REQUIRED COMPONENTS CorePrivate)
+endif()
 
 qt_standard_project_setup(REQUIRES 6.10)
 
@@ -35,11 +39,14 @@ set_target_properties(appTask3QT PROPERTIES
 target_link_libraries(appTask3QT
     PRIVATE
     Qt6::Core
-    Qt6::CorePrivate
     Qt6::Quick
     Qt6::Multimedia
     Qt6::QuickControls2
 )
+
+if(ANDROID)
+    target_link_libraries(appTask3QT PRIVATE Qt6::CorePrivate)
+endif()
 
 install(TARGETS appTask3QT
     BUNDLE DESTINATION .
