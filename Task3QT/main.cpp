@@ -1,11 +1,11 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QPermissions>
 #include "playlistmodel.h"
 
 #if defined(Q_OS_ANDROID)
 #include <QtCore/private/qandroidextras_p.h>
+#include <QPermissions>
 #endif
 
 int main(int argc, char *argv[])
