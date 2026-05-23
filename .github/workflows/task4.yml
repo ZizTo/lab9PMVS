@@ -176,12 +176,11 @@ jobs:
       - name: Generate localization
         run: flutter gen-l10n
 
-      - name: Enable Android integration test
-        uses: reactivecircus/android-emulator-runner@v2
+      - name: Run Integration Tests
+        uses: ReactiveCircus/android-emulator-runner@v2
         with:
-          api-level: 34
+          api-level: 29
+          target: default
           arch: x86_64
-          profile: pixel_6
-          script: |
-            cd minsk_transport
-            flutter test integration_test/app_test.dart
+          profile: Nexus 6
+          script: flutter test integration_test

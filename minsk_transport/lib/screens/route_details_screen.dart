@@ -32,7 +32,7 @@ class RouteDetailsScreen extends ConsumerWidget {
 
     final currentVehicle = transportState.vehicles
         .where((vehicle) => vehicle.routeId == route.id)
-        .cast<dynamic?>()
+        .cast<dynamic>()
         .firstOrNull;
 
     return Scaffold(
