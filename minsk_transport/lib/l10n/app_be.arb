@@ -1,0 +1,53 @@
+{
+  "@@locale": "be",
+  "appTitle": "Транспарт Мінска",
+  "routes": "Маршруты",
+  "favorites": "Абранае",
+  "history": "Гісторыя",
+  "settings": "Налады",
+  "all": "Усе",
+  "bus": "Аўтобус",
+  "trolleybus": "Тралейбус",
+  "tram": "Трамвай",
+  "noData": "Няма дадзеных",
+  "clearHistory": "Ачысціць гісторыю",
+  "language": "Мова",
+  "theme": "Тэма",
+  "version": "Версія",
+  "platform": "Платформа",
+  "stops": "Прыпынкі",
+  "type": "Тып",
+  "routeDetails": "Дэталі маршруту",
+  "liveVehicle": "Транспарт анлайн",
+  "noLiveVehicle": "Няма актыўнага транспарту",
+  "loginTitle": "Уваход у праграму",
+  "login": "Увайсці",
+  "logout": "Выйсці",
+  "email": "Email",
+  "password": "Пароль",
+  "loading": "Загрузка...",
+  "requiredField": "Абавязковае поле",
+  "invalidEmail": "Некарэктны email",
+  "shortPassword": "Пароль занадта кароткі",
+  "invalidCredentials": "Няправільныя дадзеныя для ўваходу",
+  "loggedInAs": "Уваход выкананы як",
+  "systemTheme": "Сістэмная",
+  "lightTheme": "Светлая",
+  "darkTheme": "Цёмная",
+  "travelTime": "{minutes} мін",
+  "@travelTime": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "routeNumber": "Маршрут {number}",
+  "@routeNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  }
+}

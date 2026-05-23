@@ -1,0 +1,53 @@
+{
+  "@@locale": "ru",
+  "appTitle": "Транспорт Минска",
+  "routes": "Маршруты",
+  "favorites": "Избранное",
+  "history": "История",
+  "settings": "Настройки",
+  "all": "Все",
+  "bus": "Автобус",
+  "trolleybus": "Троллейбус",
+  "tram": "Трамвай",
+  "noData": "Нет данных",
+  "clearHistory": "Очистить историю",
+  "language": "Язык",
+  "theme": "Тема",
+  "version": "Версия",
+  "platform": "Платформа",
+  "stops": "Остановки",
+  "type": "Тип",
+  "routeDetails": "Детали маршрута",
+  "liveVehicle": "Транспорт онлайн",
+  "noLiveVehicle": "Нет активного транспорта",
+  "loginTitle": "Вход в приложение",
+  "login": "Войти",
+  "logout": "Выйти",
+  "email": "Email",
+  "password": "Пароль",
+  "loading": "Загрузка...",
+  "requiredField": "Обязательное поле",
+  "invalidEmail": "Некорректный email",
+  "shortPassword": "Пароль слишком короткий",
+  "invalidCredentials": "Неверные данные для входа",
+  "loggedInAs": "Выполнен вход как",
+  "systemTheme": "Системная",
+  "lightTheme": "Светлая",
+  "darkTheme": "Тёмная",
+  "travelTime": "{minutes} мин",
+  "@travelTime": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "routeNumber": "Маршрут {number}",
+  "@routeNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  }
+}

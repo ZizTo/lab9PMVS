@@ -1,0 +1,187 @@
+name: Task4 Minsk Transport CI
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/task4.yml"
+      - "minsk_transport/**"
+  pull_request:
+    paths:
+      - ".github/workflows/task4.yml"
+      - "minsk_transport/**"
+
+permissions:
+  contents: read
+
+jobs:
+  analyze-and-unit-widget-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: minsk_transport
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Flutter version
+        run: flutter --version
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate localization
+        run: flutter gen-l10n
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Run unit and widget tests
+        run: flutter test
+
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: minsk_transport
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate localization
+        run: flutter gen-l10n
+
+      - name: Build Web
+        run: flutter build web --release
+
+      - name: Upload Web Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: task4-web-build
+          path: minsk_transport/build/web
+
+  android:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: minsk_transport
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate localization
+        run: flutter gen-l10n
+
+      - name: Build APK
+        run: flutter build apk --debug
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: task4-android-apk
+          path: minsk_transport/build/app/outputs/flutter-apk/app-debug.apk
+
+  linux:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: minsk_transport
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            clang cmake ninja-build pkg-config \
+            libgtk-3-dev liblzma-dev
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Enable Linux desktop
+        run: flutter config --enable-linux-desktop
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate localization
+        run: flutter gen-l10n
+
+      - name: Build Linux
+        run: flutter build linux --debug
+
+      - name: Upload Linux Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: task4-linux-build
+          path: minsk_transport/build/linux/x64/debug/bundle
+
+  integration-android:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: minsk_transport
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate localization
+        run: flutter gen-l10n
+
+      - name: Enable Android integration test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          profile: pixel_6
+          script: |
+            cd minsk_transport
+            flutter test integration_test/app_test.dart

@@ -1,0 +1,53 @@
+{
+  "@@locale": "en",
+  "appTitle": "Minsk Transport",
+  "routes": "Routes",
+  "favorites": "Favorites",
+  "history": "History",
+  "settings": "Settings",
+  "all": "All",
+  "bus": "Bus",
+  "trolleybus": "Trolleybus",
+  "tram": "Tram",
+  "noData": "No data",
+  "clearHistory": "Clear history",
+  "language": "Language",
+  "theme": "Theme",
+  "version": "Version",
+  "platform": "Platform",
+  "stops": "Stops",
+  "type": "Type",
+  "routeDetails": "Route details",
+  "liveVehicle": "Live vehicle",
+  "noLiveVehicle": "No active vehicle",
+  "loginTitle": "Sign in",
+  "login": "Login",
+  "logout": "Logout",
+  "email": "Email",
+  "password": "Password",
+  "loading": "Loading...",
+  "requiredField": "Required field",
+  "invalidEmail": "Invalid email",
+  "shortPassword": "Password is too short",
+  "invalidCredentials": "Invalid credentials",
+  "loggedInAs": "Logged in as",
+  "systemTheme": "System",
+  "lightTheme": "Light",
+  "darkTheme": "Dark",
+  "travelTime": "{minutes} min",
+  "@travelTime": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "routeNumber": "Route {number}",
+  "@routeNumber": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  }
+}
