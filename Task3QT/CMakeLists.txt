@@ -10,7 +10,7 @@ if(ANDROID)
     find_package(Qt6 REQUIRED COMPONENTS CorePrivate)
 endif()
 
-qt_standard_project_setup(REQUIRES 6.10)
+qt_standard_project_setup(REQUIRES 6.5.3)
 
 qt_add_executable(appTask3QT
     Main.cpp
